@@ -29,3 +29,24 @@ The following provides more details on the included cryptographic
 software:
   Hadoop Core uses the SSL libraries from the Jetty project written 
 by mortbay.org.
+
+
+Sandy's Guava Shading Notes - May, 2018 
+
+I found a shading pom example on Maven Central:
+https://repository.cloudera.com/content/repositories/releases/org/apache/hadoop/cloudera-guava/2.5.0-cdh5.2.3.4/cloudera-guava-2.5.0-cdh5.2.3.4.pom
+for a different version of hadoop, but the same 11.0.2 version of guava. 
+
+Then I downloaded the Hadoop src for 2.6.0-cdh5.5.1 from here: 
+http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.5.1-src.tar.gz
+
+The src is a maven project the build and packaging can be run like this: 
+JAVA_HOME=/usr/lib/jvm/java-7-oracle mvn package -Pdist -DskipTests -Dtar
+
+The build system requires java 7 and protoc 2.5.0.  I already had java 7, but I had to go build protoc from here: 
+https://github.com/google/protobuf/releases/tag/v2.5.0
+
+
+I worked the maven shading plugin in by hand, and added setTurnVersion.sh to sed in the 
+updated version number. 
+
