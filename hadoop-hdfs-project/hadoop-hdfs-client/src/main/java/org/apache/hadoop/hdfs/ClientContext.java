@@ -76,7 +76,7 @@ public class ClientContext {
   /**
    * Caches short-circuit file descriptors, mmap regions.
    */
-  private final ShortCircuitCache shortCircuitCache;
+  private final ShortCircuitCache[] shortCircuitCache;
 
   /**
    * Caches TCP and UNIX domain sockets for reuse.
@@ -114,6 +114,11 @@ public class ClientContext {
    * didn't match its config values yet.
    */
   private boolean printedConfWarning = false;
+  
+  /**
+   * ShorCircuitCache array size.
+   */
+  private final int clientShortCircuitNum;
 
   private NodeBase clientNode;
   private boolean topologyResolutionEnabled;
@@ -124,7 +129,11 @@ public class ClientContext {
 
     this.name = name;
     this.confString = scConf.confAsString();
-    this.shortCircuitCache = ShortCircuitCache.fromConf(scConf);
+    this.clientShortCircuitNum = conf.clientShortCircuitNum;
+    shortCircuitCache = new ShortCircuitCache[this.clientShortCircuitNum];
+    for (int i = 0; i < this.clientShortCircuitNum; i++) {
+      this.shortCircuitCache = ShortCircuitCache.fromConf(scConf);
+    }
     this.peerCache = new PeerCache(scConf.getSocketCacheCapacity(),
         scConf.getSocketCacheExpiry());
     this.keyProviderCache = new KeyProviderCache(
@@ -207,8 +216,8 @@ public class ClientContext {
     return confString;
   }
 
-  public ShortCircuitCache getShortCircuitCache() {
-    return shortCircuitCache;
+  public ShortCircuitCache getShortCircuitCache(long idx) {
+    return shortCircuitCache[(int) (idx % clientShortCircuitNum)];
   }
 
   public PeerCache getPeerCache() {
