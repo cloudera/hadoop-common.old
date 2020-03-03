@@ -237,7 +237,9 @@ public class DFSClient implements java.io.Closeable, RemotePeerFactory,
   private static volatile ThreadPoolExecutor STRIPED_READ_THREAD_POOL;
   private final int smallBufferSize;
   private final long serverDefaultsValidityPeriod;
+  private final int clientShortCircuitNum;
 
+        
   public DfsClientConf getConf() {
     return dfsClientConf;
   }
@@ -386,6 +388,11 @@ public class DFSClient implements java.io.Closeable, RemotePeerFactory,
       this.initThreadsNumForHedgedReads(dfsClientConf.
           getHedgedReadThreadpoolSize());
     }
+      
+    this.clientShortCircuitNum = conf.getInt(DFS_CLIENT_SHORT_CIRCUIT_NUM, 
+        DFS_CLIENT_SHORT_CIRCUIT_NUM_DEFAULT);
+    this.clientShortCircuitNum = this.clientShortCircuitNum > 3 ? 3 : this.clientShortCircuitNum;
+    this.clientShortCircuitNum = this.clientShortCircuitNum < 1 ? 1 : this.clientShortCircuitNum;
 
     this.initThreadsNumForStripedReads(dfsClientConf.
         getStripedReadThreadpoolSize());
