@@ -130,7 +130,7 @@ public class ClientContext {
     this.name = name;
     this.confString = scConf.confAsString();
     this.clientShortCircuitNum = conf.clientShortCircuitNum;
-    shortCircuitCache = new ShortCircuitCache[this.clientShortCircuitNum];
+    this.shortCircuitCache = new ShortCircuitCache[this.clientShortCircuitNum];
     for (int i = 0; i < this.clientShortCircuitNum; i++) {
       this.shortCircuitCache = ShortCircuitCache.fromConf(scConf);
     }
