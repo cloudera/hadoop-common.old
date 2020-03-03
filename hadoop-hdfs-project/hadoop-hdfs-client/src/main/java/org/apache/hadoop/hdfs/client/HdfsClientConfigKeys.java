@@ -167,6 +167,9 @@ public interface HdfsClientConfigKeys {
   String REPLICA_ACCESSOR_BUILDER_CLASSES_KEY =
       PREFIX + "replica.accessor.builder.classes";
 
+  String DFS_CLIENT_SHORT_CIRCUIT_NUM = "dfs.client.short.circuit.num";
+  int DFS_CLIENT_SHORT_CIRCUIT_NUM_DEFAULT = 1;
+
   // The number of NN response dropped by client proactively in each RPC call.
   // For testing NN retry cache, we can set this property with positive value.
   String  DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY =
